@@ -1,6 +1,6 @@
 # openai_assistant/assistant_manager.py
 from typing import Optional
-from . import get_openai_client
+from .utils import get_openai_client
 
 
 async def list_assistants():

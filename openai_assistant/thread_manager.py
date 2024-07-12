@@ -1,6 +1,6 @@
 # openai_assistant/thread_manager.py
 from typing import Optional
-from . import get_openai_client
+from .utils import get_openai_client
 
 
 async def list_messages(thread_id: str, limit: int = 20, order: str = 'desc', after: Optional[str] = None,
