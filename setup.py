@@ -1,12 +1,15 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
-    name='openai_assistent',
+    name='openai_assistant',
     version='0.1',
-    packages=[''],
+    packages=find_packages(),
     url='',
     license='MIT',
     author='Xiaobocute',
     author_email='Business@xiaobo.tw',
-    description=''
+    description='',
+    install_requires=[
+
+    ],
 )
