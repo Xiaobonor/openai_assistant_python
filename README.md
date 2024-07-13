@@ -1,9 +1,24 @@
 # 🚀 OpenAI Assistant
 
+### 📝 Important Warning
+This package is currently under development and may contain bugs.  
+If you encounter any issues, please report them in the issues section.
+
 ### 🌐 Description
 
-! This is an asynchronous Python package !  
-OpenAI Assistant is a Python package designed to help developers seamlessly integrate OpenAI assistant capabilities into their applications.
+⚠️ This is an asynchronous Python package.
+
+The OpenAI Assistant Python package is designed to help developers easily and efficiently integrate OpenAI assistant capabilities into their applications. If you find this package helpful, please consider giving a star to this repository.
+
+### ✅ ToDo
+- [x] Support image and file input & upload
+- [x] Unit tests
+
+
+- [ ] Support for synchronous OpenAI client
+- [ ] Optimize code
+- [ ] Write a wiki
+- [ ] more.....
 
 ## 📦 Installation
 
@@ -88,3 +103,7 @@ register_functions({
 ## 📜 License
 
 This project is licensed under the MIT License.
+
+## ⭐️ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Xiaobonor/openai_assistant_python&type=Date)](https://star-history.com/#Xiaobonor/openai_assistant_python&Date)
