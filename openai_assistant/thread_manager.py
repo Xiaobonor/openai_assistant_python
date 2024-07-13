@@ -42,6 +42,11 @@ async def send_image_with_id(thread_id: str, image_id: str, role: str = "user"):
                                                                   content=[{"type": "image_file", "image_file": {"file_id": image_id}}])
 
 
+async def send_image_with_url(thread_id: str, image_url: str, role: str = "user"):
+    return await get_openai_client().beta.threads.messages.create(thread_id=thread_id, role=role,
+                                                                  content=[{"type": "image_url", "image_url": {"url": image_url}}])
+
+
 async def create_run(thread_id: str, assistant_id: str):
     return await get_openai_client().beta.threads.runs.create(thread_id=thread_id, assistant_id=assistant_id)
 
