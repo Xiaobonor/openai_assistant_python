@@ -43,7 +43,7 @@ class TestAgent(OpenAIAssistant):
 
     # Use this method to create an instance of your agent
     @classmethod
-    async def create(cls, callback):
+    async def create(cls, callback=None):
         self = cls(callback)
         await self.initialize_thread_id()
         return self
