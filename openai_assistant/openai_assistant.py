@@ -5,7 +5,7 @@ from .thread_manager import (
     create_run, get_runs_by_thread, submit_tool_outputs_and_poll,
     send_image_with_id, send_image_with_url
 )
-from .file_manager import upload_image
+from .file_manager import upload_file
 from .tool_functions_map import get_function
 from .utils import convert_base64_image
 
@@ -45,7 +45,52 @@ class OpenAIAssistant:
         """
         return await delete_thread(self.thread_id)
 
-    async def send_request_with_base64(self, message_content: str, base64_images: list):
+    async def send_request_with_file(self, message_content: str, file_path: str):
+        """
+        Send a request with a file.
+
+        Args:
+            message_content (str): The content of the message.
+            file_path (str): The path to the file.
+
+        Returns:
+            Response: The response from the send_request call.
+        """
+        file = await upload_file(open(file_path, "rb"))
+        await send_image_with_id(self.thread_id, file.id)
+        return await self.send_request(message_content)
+
+    async def send_request_image_path(self, message_content: str, image_path: str):
+        """
+        Send a request with an image file.
+
+        Args:
+            message_content (str): The content of the message.
+            image_path (str): The path to the image file.
+
+        Returns:
+            Response: The response from the send_request call.
+        """
+        image = await upload_file(open(image_path, "rb"), "vision")
+        await send_image_with_id(self.thread_id, image.id)
+        return await self.send_request(message_content)
+
+    async def send_request_image_io(self, message_content: str, image_io):
+        """
+        Send a request with an image.
+
+        Args:
+            message_content (str): The content of the message.
+            image_io (io.BytesIO): The image file.
+
+        Returns:
+            Response: The response from the send_request call.
+        """
+        image = await upload_file(image_io, "vision")
+        await send_image_with_id(self.thread_id, image.id)
+        return await self.send_request(message_content)
+
+    async def send_request_image_base64(self, message_content: str, base64_images: list):
         """
         Send a request with base64 encoded images.
 
@@ -64,12 +109,12 @@ class OpenAIAssistant:
 
         for base64_image in base64_images:
             image_io, mimetype = convert_base64_image(base64_image)
-            image = await upload_image(image_io)
+            image = await upload_file(image_io, "vision")
             await send_image_with_id(self.thread_id, image.id)
 
         return await self.send_request(message_content)
 
-    async def send_request_with_url(self, message_content: str, urls: list):
+    async def send_request_image_url(self, message_content: str, urls: list):
         """
         Send a request with image URLs.
 

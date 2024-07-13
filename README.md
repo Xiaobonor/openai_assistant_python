@@ -16,18 +16,16 @@ pip install openai-assistant
 ## 🛠 Usage
 
 You need to initialize this package with your OpenAI client.  
-Example for Azure OpenAI:
+Example for AsyncOpenAI:
 
 ```python
 import asyncio
 from openai_assistant import init, OpenAIAssistant
-from openai import AsyncAzureOpenAI
+from openai import AsyncOpenAI
 
 # Initialize the OpenAI client with Azure endpoint and API key
-openai = AsyncAzureOpenAI(
-    azure_endpoint="https://openai.azure.com/",
-    api_key="your-api-key",
-    api_version="2024-05-01-preview"
+openai = AsyncOpenAI(
+    api_key="sk-123456"
 )
 
 # Initialize OpenAI assistants
@@ -51,10 +49,17 @@ class TestAgent(OpenAIAssistant):
     # Define a method for submitting requests to the assistant
     async def submit_request(self, user_input: str):
         return await self.send_request(user_input)
+    
+    async def submit_request_with_image(self, user_input: str, base64_image: list):
+        return await self.send_request_with_url(user_input, base64_image)
+        
 
 # Create an agent instance and submit a request
 agent = asyncio.run(TestAgent.create())
 response = asyncio.run(agent.submit_request("Hello, how are you?"))
+
+# Base64 image example
+response = asyncio.run(agent.submit_request_with_image("What is in this image?", ["base64_image"]))
 ```
 
 Want to enable your assistant to call custom functions? Register your function map:

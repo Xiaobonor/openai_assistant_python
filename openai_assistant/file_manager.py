@@ -3,17 +3,18 @@ from typing import Any
 from .utils import get_openai_client
 
 
-async def upload_image(image) -> Any:
+async def upload_file(file, purpose="assistants") -> Any:
     """
-    Upload an image to OpenAI.
+    Upload a file to OpenAI.
 
     Args:
-        image: The image file to upload.
+        file: The file to upload.
+        purpose: The purpose of the file.
 
     Returns:
         Any: The response from the upload operation.
     """
-    return await get_openai_client().files.create(file=image, purpose="vision")
+    return await get_openai_client().files.create(file=file, purpose=purpose)
 
 
 async def delete_file(file_id: str) -> Any:
