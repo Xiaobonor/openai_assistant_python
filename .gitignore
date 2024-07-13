@@ -6,3 +6,5 @@ openai_assistant.egg-info/
 dist/
 
 build/lib/openai_assistant/
+
+*.pyc

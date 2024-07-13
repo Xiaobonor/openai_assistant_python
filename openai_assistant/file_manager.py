@@ -53,7 +53,7 @@ async def retrieve_file(file_id: str) -> Any:
     return await get_openai_client().files.retrieve(file_id)
 
 
-async def update_file(file_id: str, file) -> Any:
+async def update_file(file_id: str, file, purpose="assistants") -> Any:
     """
     Update a file in OpenAI by deleting the old file and uploading a new one.
 
@@ -65,4 +65,4 @@ async def update_file(file_id: str, file) -> Any:
         Any: The response from the upload operation.
     """
     await delete_file(file_id)
-    return await upload_image(file)
+    return await upload_file(file, purpose)

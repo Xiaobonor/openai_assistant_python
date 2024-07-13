@@ -3,4 +3,5 @@ from .utils import init
 from .assistant_manager import *
 from .thread_manager import *
 from .tool_functions_map import *
+from .vector_stores_manager import *
 from .openai_assistant import OpenAIAssistant
