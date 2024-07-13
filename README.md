@@ -15,51 +15,59 @@ pip install openai-assistant
 
 ## 🛠 Usage
 
-You need to initialize this package with your OpenAI client.  
-Example for AsyncOpenAI:
+To use this package, you need to initialize it with your OpenAI client.  
+Here's an example using AsyncOpenAI:
 
 ```python
 import asyncio
 from openai_assistant import init, OpenAIAssistant
 from openai import AsyncOpenAI
 
-# Initialize the OpenAI client with Azure endpoint and API key
-openai = AsyncOpenAI(
-    api_key="sk-123456"
-)
+# Initialize the OpenAI client with API key
+openai = AsyncOpenAI(api_key="sk-123456")
 
 # Initialize OpenAI assistants
 assistants = init(openai)
 
-# Define your agent or assistant class
+# Define your assistant or agent class
 class TestAgent(OpenAIAssistant):
-    # Input your assistant ID; thread ID and callback are optional
-    # If thread ID is not provided, a new thread will be generated automatically
-    def __init__(self, callback=None):
+    def __init__(self, assistant_id, thread_id=None, callback=None):
+        # or just put your assistant id here
         assistant_id = "your-assistant-id"
-        super().__init__(assistant_id, None, callback)
+        super().__init__(assistant_id, thread_id, callback)
 
-    # Use this method to create an instance of your agent
     @classmethod
-    async def create(cls, callback=None):
-        self = cls(callback)
+    async def create(cls, assistant_id, thread_id=None, callback=None):
+        # You can remove assistant_id from arguments, if you put it in __init__
+        self = cls(assistant_id, thread_id, callback)
         await self.initialize_thread_id()
         return self
 
-    # Define a method for submitting requests to the assistant
     async def submit_request(self, user_input: str):
         return await self.send_request(user_input)
     
-    async def submit_request_with_image(self, user_input: str, base64_image: list):
-        return await self.send_request_with_url(user_input, base64_image)
+    async def send_request_image_base64(self, user_input: str, base64_images: list):
+        return await self.send_request_image_base64(user_input, base64_images)
         
+    async def send_request_image_url(self, user_input: str, urls: list):
+        return await self.send_request_image_url(user_input, urls)
 
 # Create an agent instance and submit a request
-agent = asyncio.run(TestAgent.create())
-response = asyncio.run(agent.submit_request("Hello, how are you?"))
+async def main():
+    agent = await TestAgent.create()
+    response = await agent.submit_request("Hello, how are you?")
+    print(response)
 
-# Base64 image example
-response = asyncio.run(agent.submit_request_with_image("What is in this image?", ["base64_image"]))
+    # Base64 image example
+    response = await agent.send_request_image_base64("What is in this image?", ["data:image/jpeg;base64,/9jS..."])
+    print(response)
+
+    # URL image example
+    response = await agent.send_request_image_url("What is in this image?", ["https://example.com/image.jpg"])
+    print(response)
+
+# Run the main function
+asyncio.run(main())
 ```
 
 Want to enable your assistant to call custom functions? Register your function map:
