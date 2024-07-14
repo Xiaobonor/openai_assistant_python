@@ -17,7 +17,7 @@ The OpenAI Assistant Python package is designed to help developers easily and ef
 
 - [ ] Support for synchronous OpenAI client
 - [ ] Optimize code
-- [ ] Write a wiki
+- [ ] Write a docs
 - [ ] more.....
 
 ## 📦 Installation
