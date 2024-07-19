@@ -104,9 +104,5 @@ register_functions({
 
 This project is licensed under the MIT License.
 
-## ⭐️ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Xiaobonor/openai_assistant_python&type=Date)](https://star-history.com/#Xiaobonor/openai_assistant_python&Date)
-
 ## 🔗 Reference
 Inspired by and improved upon: [openai-assistent-python by shamspias](https://github.com/shamspias/openai-assistent-python).
