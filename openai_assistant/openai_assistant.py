@@ -56,9 +56,7 @@ class OpenAIAssistant:
         Returns:
             Response: The response from the send_request call.
         """
-        file = await upload_file(open(file_path, "rb"))
-        await send_image_with_id(self.thread_id, file.id)
-        return await self.send_request(message_content)
+        return await self._send_request_with_upload(message_content, file_path, "assistants")
 
     async def send_request_image_path(self, message_content: str, image_path: str):
         """
@@ -71,9 +69,7 @@ class OpenAIAssistant:
         Returns:
             Response: The response from the send_request call.
         """
-        image = await upload_file(open(image_path, "rb"), "vision")
-        await send_image_with_id(self.thread_id, image.id)
-        return await self.send_request(message_content)
+        return await self._send_request_with_upload(message_content, image_path, "vision")
 
     async def send_request_image_io(self, message_content: str, image_io):
         """
@@ -86,9 +82,7 @@ class OpenAIAssistant:
         Returns:
             Response: The response from the send_request call.
         """
-        image = await upload_file(image_io, "vision")
-        await send_image_with_id(self.thread_id, image.id)
-        return await self.send_request(message_content)
+        return await self._send_request_with_upload(message_content, image_io, "vision")
 
     async def send_request_image_base64(self, message_content: str, base64_images: list):
         """
@@ -109,8 +103,7 @@ class OpenAIAssistant:
 
         for base64_image in base64_images:
             image_io, mimetype = convert_base64_image(base64_image)
-            image = await upload_file(image_io, "vision")
-            await send_image_with_id(self.thread_id, image.id)
+            await self._send_request_with_upload(message_content, image_io, "vision")
 
         return await self.send_request(message_content)
 
@@ -150,6 +143,27 @@ class OpenAIAssistant:
         await create_run(self.thread_id, self.assistant_id)
         await self._wait_for_assistant_response()
         return await self._retrieve_latest_assistant_response()
+
+    async def _send_request_with_upload(self, message_content: str, file, file_type: str):
+        """
+        Helper function to upload a file and send a request.
+
+        Args:
+            message_content (str): The content of the message.
+            file: The file to upload (can be a path or a file-like object).
+            file_type (str): The type of the file ('file' or 'vision').
+
+        Returns:
+            Response: The response from the send_request call.
+        """
+        if isinstance(file, str):
+            async with open(file, "rb") as f:
+                uploaded_file = await upload_file(f, file_type)
+        else:
+            uploaded_file = await upload_file(file, file_type)
+
+        await send_image_with_id(self.thread_id, uploaded_file.id)
+        return await self.send_request(message_content)
 
     async def _wait_for_assistant_response(self):
         """Wait for the assistant's response, handling tool calls if required."""
