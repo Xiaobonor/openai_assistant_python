@@ -17,6 +17,16 @@ def get_function(name: str) -> Callable:
     return _FUNCTION_MAP.get(name)
 
 
+def list_functions() -> Dict[str, Callable]:
+    """
+    List all registered functions.
+
+    Returns:
+        Dict[str, Callable]: A dictionary of function names and their corresponding functions.
+    """
+    return _FUNCTION_MAP.copy()
+
+
 def register_function(name: str, function: Callable):
     """
     Register a single function to be used in the assistant.
@@ -45,8 +55,7 @@ def unregister_function(name: str):
     Args:
         name (str): The name of the function to unregister.
     """
-    if name in _FUNCTION_MAP:
-        del _FUNCTION_MAP[name]
+    _FUNCTION_MAP.pop(name, None)
 
 
 def replace_function(name: str, function: Callable):

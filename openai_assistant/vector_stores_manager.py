@@ -26,6 +26,21 @@ async def list_vector_stores() -> Any:
     return await get_openai_client().beta.vector_stores.list()
 
 
+async def upload_and_poll_vector_store_data(vector_store_id: str, files_path: str) -> Any:
+    """
+    Upload and poll data to a vector store.
+
+    Args:
+        vector_store_id (str): The ID of the vector store.
+        files_path (str): The path to the file to upload.
+
+    Returns:
+        Any: The response from the upload operation.
+    """
+    file_streams = [open(path, "rb") for path in files_path]
+    return await get_openai_client().beta.vector_stores.upload_and_poll_data(vector_store_id, file_streams)
+
+
 async def retrieve_vector_store(vector_store_id: str) -> Any:
     """
     Retrieve a specific vector store by its ID.

@@ -23,6 +23,7 @@ class OpenAIAssistant:
         self.assistant_id = assistant_id
         self.thread_id = thread_id
         self.callback = callback
+        self.vector_store_ids = []
 
     async def initialize_thread_id(self):
         """Initialize the thread ID if it is not set."""
@@ -44,19 +45,6 @@ class OpenAIAssistant:
             Response: The response from the delete_thread call.
         """
         return await delete_thread(self.thread_id)
-
-    async def send_request_with_file(self, message_content: str, file_path: str):
-        """
-        Send a request with a file.
-
-        Args:
-            message_content (str): The content of the message.
-            file_path (str): The path to the file.
-
-        Returns:
-            Response: The response from the send_request call.
-        """
-        return await self._send_request_with_upload(message_content, file_path, "assistants")
 
     async def send_request_image_path(self, message_content: str, image_path: str):
         """
