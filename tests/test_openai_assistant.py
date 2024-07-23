@@ -1,8 +1,19 @@
 # tests/test_openai_assistant.py
 import unittest
-from unittest.mock import AsyncMock, patch, mock_open, MagicMock
+from unittest.mock import AsyncMock, patch, MagicMock, mock_open
 from openai_assistant.openai_assistant import OpenAIAssistant
 from io import BytesIO
+
+
+class AsyncContextManager:
+    def __init__(self, mock):
+        self.mock = mock
+
+    async def __aenter__(self):
+        return self.mock
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        pass
 
 
 class TestOpenAIAssistant(unittest.IsolatedAsyncioTestCase):
@@ -29,6 +40,7 @@ class TestOpenAIAssistant(unittest.IsolatedAsyncioTestCase):
     @patch('builtins.open', new_callable=mock_open, read_data=b'test data')
     async def test_send_request_with_file(self, mock_file, mock_retrieve, mock_wait, mock_create_run, mock_send_message, mock_send_image, mock_upload):
         self.assistant.thread_id = "test_thread"
+        mock_file.return_value = AsyncContextManager(mock_file.return_value)
         response = await self.assistant.send_request_with_file("message_content", "test_file_path")
         self.assertEqual(response, "response")
 
@@ -83,6 +95,7 @@ class TestOpenAIAssistant(unittest.IsolatedAsyncioTestCase):
     @patch('builtins.open', new_callable=mock_open, read_data=b'test data')
     async def test_send_request_with_upload_file(self, mock_file, mock_retrieve, mock_wait, mock_create_run, mock_send_message, mock_send_image, mock_upload):
         self.assistant.thread_id = "test_thread"
+        mock_file.return_value = AsyncContextManager(mock_file.return_value)
         response = await self.assistant._send_request_with_upload("message_content", "test_file_path", "file")
         self.assertEqual(response, "response")
 
