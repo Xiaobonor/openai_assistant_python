@@ -10,6 +10,11 @@ If you encounter any issues, please report them in the issues section.
 
 The OpenAI Assistant Python package is designed to help developers easily and efficiently integrate OpenAI assistant capabilities into their applications. If you find this package helpful, please consider giving a star to this repository.
 
+### Quick Preview (How to create an agent!)
+
+![image](https://github.com/user-attachments/assets/c3192bcb-8fbe-4d7f-9382-a0da5b848f4e)
+
+
 ### ✅ ToDo
 - [x] Support image and file input & upload
 - [x] Unit tests
